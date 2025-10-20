@@ -778,25 +778,25 @@ workflow:
           allowed_file_upload_methods:
           - local_file
           - remote_url
-          label: 分析起始时间（YYYYMMDD）
+          label: Start Date（YYYYMMDD）
           max_length: 8
           options: []
           required: true
           type: text-input
           variable: date_start
-        - label: 分析终止时间（YYYYMMDD）
+        - label: End Date（YYYYMMDD）
           max_length: 48
           options: []
           required: true
           type: text-input
           variable: date_end
-        - label: 路由事件时间（YYYYMMDD）
+        - label: Event Date（YYYYMMDD）
           max_length: 8
           options: []
           required: true
           type: text-input
           variable: event_time
-        - label: 报告语言
+        - label: Report Language
           max_length: 48
           options: []
           required: true
@@ -1195,7 +1195,7 @@ workflow:
       width: 244
     - data:
         desc: ''
-        instruction: 根据输入{{#1755057511497.text#}}, 如果该输入长度为2且为大写英文字符，则is_country输出为1；否则为0。target则赋值为原始输入即可。
+        instruction: Based on the input {{#1755057511497.text#}}, if the input has a length of 2 and consists of uppercase English letters, then output is_country as 1; otherwise, output it as 0. The target should be assigned the original input value.
         model:
           completion_params:
             max_tokens: 8192
@@ -1204,11 +1204,11 @@ workflow:
           name: deepseek-ai/DeepSeek-V3
           provider: langgenius/siliconflow/siliconflow
         parameters:
-        - description: 是否输入为国家
+        - description: If the input is a country
           name: is_country
           required: false
           type: number
-        - description: 分析目标（国家或ASN）
+        - description: Analysis target（country or ASN）
           name: target
           required: false
           type: string
@@ -1276,9 +1276,14 @@ workflow:
         selected: false
         title: get asns by country
         tool_configurations: {}
-        tool_description: "\n根据国家代码返回该国家的所有AS号及其数量\n\n参数:\n    country_code: 国家ISO代码（如'US'）\n\
-          返回:\n    包含AS列表和数量的字典，格式为:\n    {\n        \"as_list\": [\"1\", \"2\", \"\
-          3\"],  # AS号字符串列表\n        \"count\": 3                   # AS数量\n    }\n"
+        tool_description:"Return all AS numbers and their count for a given country code.
+        Parameters: country_code: Country ISO code (e.g., 'US')
+          Returns:
+              A dictionary containing AS list and count, formatted as:
+              {
+                  "as_list": ["1", "2", "3"],  # List of AS number strings
+                  "count": 3                   # Count of AS numbers
+              }"
         tool_label: get_asn_by_country
         tool_name: get_asn_by_country
         tool_node_version: '2'
@@ -2831,12 +2836,12 @@ workflow:
           \ for plotting.\n    \n    Args:\n        asn_data: Dictionary containing\
           \ ASN metrics data or JSON string\n        \n    Returns:\n        JSON\
           \ string containing chart configuration for plotting\n    \"\"\"\n    #\
-          \ 如果输入是字符串，尝试解析为JSON\n    if isinstance(asn_data, str):\n        try:\n\
+          \    if isinstance(asn_data, str):\n        try:\n\
           \            asn_data = json.loads(asn_data)\n        except json.JSONDecodeError:\n\
           \            raise ValueError(\"Input is not a valid JSON string\")\n  \
-          \  \n    # 确保 asn_data 是字典类型\n    if not isinstance(asn_data, dict):\n \
+          \  \n       if not isinstance(asn_data, dict):\n \
           \       raise TypeError(f\"Expected dict or JSON string, got {type(asn_data)}\"\
-          )\n    \n    # 验证必要字段是否存在\n    required_fields = ['asn', 'timestamps', 'new_prefixes',\
+          )\n    \n     required_fields = ['asn', 'timestamps', 'new_prefixes',\
           \ 'lost_prefixes', 'unchanged_prefixes', 'changed_paths']\n    for field\
           \ in required_fields:\n        if field not in asn_data:\n            raise\
           \ ValueError(f\"Missing required field: {field}\")\n    \n    # Create chart\
@@ -4221,7 +4226,7 @@ workflow:
       width: 244
     - data:
         desc: ''
-        instruction: 从{{#1756285211779.text#}}中提取相应的参数，其中countrycode为数组，里面元素为两位国家代码，start_time为数据，元素为输入中的dateStart字段，end_time为数组，元素为输入中的dateEnd字段，提取这三个参数
+        instruction: Extract the corresponding parameters from {{#1756285211779.text#}}, where countrycode is an array containing two-letter country codes, start_time is an array containing the dateStart field from the input, and end_time is an array containing the dateEnd field from the input. Extract these three parameters.
         model:
           completion_params:
             max_tokens: 8192
@@ -4605,23 +4610,23 @@ workflow:
     - data:
         code: "import json\nfrom typing import Dict, List, Any\nimport math\nfrom\
           \ datetime import datetime\n\ndef main(input_data: List) -> str:\n    \"\
-          \"\"\n    从输入数据中提取时间戳（timestamps）和流量值（values），进行抽样处理和时间戳格式转换。\n    \n  \
-          \  Args:\n        input_data: 包含时间序列数据的JSON字典\n        \n    Returns:\n\
-          \        JSON字符串包含三个字段：config, data_path, data_outgoing\n    \"\"\"\n  \
-          \  json_data = input_data\n    \n    # 提取第一个结果中的时间序列数据\n    result = json_data[0].get(\"\
+          \"\"\n      \n  \
+          \  Args:\n        input_data: Json Dict\n        \n    Returns:\n\
+          \        JSON fields：config, data_path, data_outgoing\n    \"\"\"\n  \
+          \  json_data = input_data\n    \n       result = json_data[0].get(\"\
           result\", {})\n    serie_0 = result.get(\"serie_0\", {})\n    \n    timestamps\
           \ = serie_0.get(\"timestamps\", [])\n    values = serie_0.get(\"values\"\
           , [])\n    \n    if not timestamps or not values:\n        raise ValueError(\"\
           No timestamps or values found in the data\")\n    \n    if len(timestamps)\
           \ != len(values):\n        raise ValueError(\"Timestamps and values arrays\
-          \ have different lengths\")\n    \n    # 将字符串值转换为浮点数\n    pkt_data = [float(value)\
-          \ for value in values]\n    \n    # 转换时间戳格式为 YYYYMMDDHH\n    def convert_timestamp(ts):\n\
+          \ have different lengths\")\n    \n      pkt_data = [float(value)\
+          \ for value in values]\n    \n      def convert_timestamp(ts):\n\
           \        try:\n            dt = datetime.fromisoformat(ts.replace('Z', '+00:00'))\n\
           \            return dt.strftime(\"%Y%m%d%H\")\n        except:\n       \
           \     return ts\n    \n    time_data = [convert_timestamp(ts) for ts in\
-          \ timestamps]\n    \n    # 抽样处理：如果数据点超过250个，进行均匀抽样\n    if len(time_data)\
+          \ timestamps]\n    \n      if len(time_data)\
           \ > 250:\n        sampling_ratio = len(time_data) / 250\n        sampled_time\
-          \ = []\n        sampled_pkts = []\n        \n        # 使用均匀抽样\n        for\
+          \ = []\n        sampled_pkts = []\n        \n             for\
           \ i in range(250):\n            index = min(math.floor(i * sampling_ratio),\
           \ len(time_data) - 1)\n            sampled_time.append(time_data[index])\n\
           \            sampled_pkts.append(pkt_data[index])\n        \n        time_data\
@@ -4639,7 +4644,7 @@ workflow:
           \    }\n            },\n            \"plugins\": {\n                \"title\"\
           : {\n                    \"display\": True,\n                    \"text\"\
           : f\"Traffic Over Time\"\n                }\n            }\n        }\n\
-          \    }\n    \n    # 返回三个字段的JSON数据\n    return {\n        \"config\": chart_config,\n\
+          \    }\n    \n     return {\n        \"config\": chart_config,\n\
           \        \"data_path\": \"C:/Data/mcp_workdir/materials/cloudflare_data_changes.png\"\
           ,\n        \"data\": str(all_data)\n    }"
         code_language: python3
@@ -5293,8 +5298,8 @@ workflow:
         selected: false
         title: google search cn
         tool_configurations: {}
-        tool_description: 一个用于执行 Google SERP 搜索并提取片段和网页的工具。输入应该是一个搜索查询。
-        tool_label: 谷歌搜索
+        tool_description: A tool for performing Google SERP searches and extracting snippets and web pages. The input should be a search query.
+        tool_label: google search
         tool_name: google_search
         tool_node_version: '2'
         tool_parameters:
@@ -5330,7 +5335,7 @@ workflow:
         code: "from typing import List\n\ndef main(cndata: List[dict], usdata: List[dict])\
           \ -> dict:\n    links = []\n    data = cndata + usdata\n    for item in\
           \ data:\n        if \"organic_results\" in item and isinstance(item[\"organic_results\"\
-          ], list):\n            # 遍历每个organic_result提取link\n            for result\
+          ], list):\n                    for result\
           \ in item[\"organic_results\"]:\n                if \"link\" in result:\n\
           \                    links.append(result[\"link\"])\n\n    return {\n  \
           \      \"urls\": links,\n    }"
@@ -5526,8 +5531,8 @@ workflow:
         selected: false
         title: google search us
         tool_configurations: {}
-        tool_description: 一个用于执行 Google SERP 搜索并提取片段和网页的工具。输入应该是一个搜索查询。
-        tool_label: 谷歌搜索
+        tool_description: A tool for performing Google SERP searches and extracting snippets and web pages. The input should be a search query.
+        tool_label: google search
         tool_name: google_search
         tool_node_version: '2'
         tool_parameters:
