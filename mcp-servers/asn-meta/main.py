@@ -5,7 +5,7 @@ import pandas as pd
 
 # Create an MCP server
 mcp = FastMCP("Demo",port=8001, host='0.0.0.0')
-filepath = "C:\\Work\\CTCT\\论文撰写\\mcp-report\\code\\asn-server\\asn_20250601.txt"
+filepath = "C:\\Work\\asn_20250601.txt"
 
 # 预加载的数据存储
 class DataStore:
