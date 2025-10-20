@@ -1478,7 +1478,7 @@ workflow:
           \          lost = int(row.get(f\"{original_ts}_lost_prefixes\", 0))\n  \
           \          unchanged = int(row.get(f\"{original_ts}_unchanged_prefixes\"\
           , 0))\n            changed = int(row.get(f\"{original_ts}_changed_paths\"\
-          , 0))\n            \n            # Calculate stability score\n         \
+          , 0))\n            \n            #  Calculate stability score\n         \
           \   numerator = unchanged + changed + 10\n            denominator = unchanged\
           \ + changed + new + lost + 10\n            stability = numerator / denominator\
           \ if denominator != 0 else 1.0\n            \n            stability_scores.append(stability)\n\
