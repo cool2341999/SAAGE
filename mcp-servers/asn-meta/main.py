@@ -36,7 +36,7 @@ class DataStore:
             print(self.df)
 
         except FileNotFoundError:
-            print("[DataStore] 文件未找到，使用空数据。")
+            print("[DataStore] File not found!。")
             self.df
 
 
