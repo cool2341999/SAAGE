@@ -14,17 +14,14 @@ import csv
 mcp = FastMCP(name="rib_diff", host='0.0.0.0', port=8003)
 
 # Confs
-FLOW_FILE = "C:/Data/mcp_workdir/route-analysis-servers/data-plane/flow_data.csv"
+FLOW_FILE = "C:/route-analysis-servers/data-plane/flow_data.csv"
 
-TEMP_DIR = "C:/Data/mcp_workdir/route-analysis-servers/data-plane/tmpdata/"
+TEMP_DIR = "C:/route-analysis-servers/data-plane/tmpdata/"
 
-# C:\Data\mcp_workdir\route-analysis-servers\data-plane
+# Data sample
 # date, hour, src_as, dst_as, ip_version, protocol, n_flows, n_bytes, n_pkts
-# 2025-07-10,00,4134,132169,4,6,1,353,1
-# 2025-07-10,00,4134,16904,4,6,14,20697,22
-
-
-
+# 2025-07-10,00,23456,132169,4,6,1,353,1
+# 2025-07-10,00,45323,16904,4,6,14,20697,22
 
 
 @mcp.tool()
@@ -144,7 +141,7 @@ def analyze_asn_traffic(
     except Exception as e:
         return f"error,Error reading CSV file: {str(e)}"
     
-    # Generate CSV output - 修改输出格式
+    # Generate CSV output
     csv_lines = ["time,n_flows,n_bytes,n_pkts"]
 
     # Generate all possible date-hour combinations within the range
@@ -160,7 +157,6 @@ def analyze_asn_traffic(
                 "n_pkts": 0
             })
             
-            # 合并date和hour为time字段，格式为YYYYMMDDHH
             time_str = f"{date_str}{hour_str}"
             csv_line = f"{time_str},{stats['n_flows']},{stats['n_bytes']},{stats['n_pkts']}"
             csv_lines.append(csv_line)
