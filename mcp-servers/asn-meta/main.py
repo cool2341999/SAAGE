@@ -7,13 +7,11 @@ import pandas as pd
 mcp = FastMCP("Demo",port=8001, host='0.0.0.0')
 filepath = "C:\\Work\\asn_20250601.txt"
 
-# 预加载的数据存储
 class DataStore:
     def __init__(self):
         self.load_data()
 
     def load_data(self):
-        """从文件加载数据（Server启动时调用）"""
         try:
             print("loading asn info ...")
             filename = os.path.basename(filepath)
@@ -42,45 +40,10 @@ class DataStore:
             self.df
 
 
-# 全局数据存储
 data_store = DataStore()
-
-
-# @mcp.tool()
-# def get_asn_by_country(country_code: str) -> list[str]:
-#     """
-#     用于根据输入国家代码，返回指定国家的所有AS号，格式为字符串列表
-    
-#     参数:
-#         country_code: 国家ISO代码（如'US'）
-#     返回:
-#         AS号字符串列表（如['1', '2', '3']）
-#     """
-#     df = data_store.df
-#     country_as = df[df['iso'] == country_code]
-
-#     print(len(country_as))
-    
-#     # 提取AS号并转为字符串列表
-#     as_list = country_as['asn'].astype(str).tolist()
-    
-#     return as_list
-
 
 @mcp.tool()
 def get_asn_by_country(country_code: str) -> dict:
-    """
-    根据国家代码返回该国家的所有AS号及其数量
-    
-    参数:
-        country_code: 国家ISO代码（如'US'）
-    返回:
-        包含AS列表和数量的字典，格式为:
-        {
-            "as_list": ["1", "2", "3"],  # AS号字符串列表
-            "count": 3                   # AS数量
-        }
-    """
     df = data_store.df
     country_as = df[df['iso'] == country_code]
     
