@@ -29,8 +29,10 @@ The current workflow design, shown below, enables fully automated analysis of ro
 This implementation allows for flexible LLM substitution and can be extended with new MCP capabilities.
 
 <img width="80%" height="auto" alt="Workflow Diagram" src="https://github.com/user-attachments/assets/0a8f63c8-11fb-4821-8ebd-0259eb1ec37d" />
+
 A sample excerpt from an analysis report is shown below:
-<img width="80%" height="auto" alt="Sample Report" src="https://github.com/user-attachments/assets/0a8f63c8-11fb-4821-8ebd-0259eb1ec37d" />
+
+<img width="80*" height="auto" alt="Sample Report" src="https://github.com/user-attachments/assets/56ba0ca4-8a0d-44e7-bef0-72126a0f8213" />
 
 ## Usage
 * Install Dify - Follow the installation guide at: https://docs.dify.ai/en/introduction
